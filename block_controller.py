@@ -28,11 +28,12 @@ class Block_Controller(object):
         t1 = datetime.now()
 
         # print GameStatus
-        print("=================================================>")
-        pprint.pprint(GameStatus, width = 61, compact = True)
+        print("========= called GetNextMove ==========================>")
+        # pprint.pprint(GameStatus, width = 61, compact = True)
 
         # get data from GameStatus
         # current shape info
+        # kaiten kanou kaisu 
         CurrentShapeDirectionRange = GameStatus["block_info"]["currentShape"]["direction_range"]
         self.CurrentShape_class = GameStatus["block_info"]["currentShape"]["class"]
         # next shape info
@@ -56,13 +57,25 @@ class Block_Controller(object):
                 # get board data, as if dropdown block
                 board = self.getBoard(self.board_backboard, self.CurrentShape_class, direction0, x0)
 
+                # search with next block Shape
+                for direction1 in NextShapeDirectionRange:
+                    # search with x range
+                    x1Min, x1Max = self.getSearchXRange(self.NextShape_class, direction1)
+                    for x1 in range(x1Min, x1Max):
+                        # get next board data, as if dropdown block
+                        nextBoard = self.getBoard(board, self.NextShape_class,direction1, x1)
+                        # evaluate board
+                        EvalValue = self.calcEvaluationValue(nextBoard)
+
+
+
                 # evaluate board
                 # EvalValue = self.calcEvaluationValueSample(board)
-                EvalValue = self.calcEvaluationValue(board)
+                # EvalValue = self.calcEvaluationValue(board)
                 # update best move
-                if EvalValue > LatestEvalValue:
-                    strategy = (direction0, x0, 1, 1)
-                    LatestEvalValue = EvalValue
+                        if EvalValue > LatestEvalValue:
+                            strategy = (direction0, x0, 1, 1)
+                            LatestEvalValue = EvalValue
 
                 ###test
                 ###for direction1 in NextShapeDirectionRange:
