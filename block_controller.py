@@ -16,6 +16,8 @@ class Block_Controller(object):
     CurrentShape_class = 0
     NextShape_class = 0
 
+    isLevel1Mode = True
+
     # GetNextMove is main function.
     # input
     #    nextMove : nextMove structure which is empty.
@@ -30,6 +32,28 @@ class Block_Controller(object):
         # print GameStatus
         print("========= called GetNextMove ==========================>")
         # pprint.pprint(GameStatus, width = 61, compact = True)
+
+        ## check game mode (Level 1 or else)
+        blockIndex = GameStatus["judge_info"]["block_index"]
+        currentShapeIndex = GameStatus["block_info"]["currentShape"]["index"]  
+        if self.isLevel1Mode == True:
+            if currentShapeIndex % 7 == blockIndex % 7:
+                print("==== LEVEL 1 mode! =====")
+                #nextMove["strategy"]["direction"] = 0
+                #nextMove["strategy"]["x"] = 0
+                #nextMove["strategy"]["y_operation"] = 1
+                #nextMove["strategy"]["y_moveblocknum"] = 1
+                nextDir, nextX = self.calcLevel1Move(blockIndex)
+                nextMove["strategy"]["direction"] = nextDir
+                nextMove["strategy"]["x"] = nextX
+                nextMove["strategy"]["y_operation"] = 1
+                nextMove["strategy"]["y_moveblocknum"] = 1
+                return nextMove
+            else :
+                self.isLevel1Mode = False
+
+
+        print("shape_info_stat ==",GameStatus["debug_info"]["shape_info_stat"])
 
         # get data from GameStatus
         # current shape info
@@ -105,6 +129,23 @@ class Block_Controller(object):
         print("## tsume code ##")
         return nextMove
 
+    def calcLevel1Move(self, blockIndex):
+        level1MoveList = [
+                [1,2],
+                [0,0],
+                [0,3],
+                [3,7],
+                [0,1],
+                [1,8],
+                [1,6]
+                ]
+        nextBlock = blockIndex % 7 - 1
+        if nextBlock < 0:
+            nextBlock = 6
+        nextBlockMove = level1MoveList[nextBlock]
+        return nextBlockMove[0], nextBlockMove[1]
+
+    
     def getSearchXRange(self, Shape_class, direction):
         #
         # get x range from shape direction.
