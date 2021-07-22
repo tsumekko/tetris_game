@@ -131,19 +131,35 @@ class Block_Controller(object):
 
     def calcLevel1Move(self, blockIndex):
         level1MoveList = [
-                [1,2],
-                [0,0],
-                [0,3],
-                [3,7],
-                [0,1],
-                [1,8],
-                [1,6]
+                [1,2,0,5,0,4,0,3,0,5,0,4,0,4,0,4,0,5,0,4,# 10tern
+                    0,5,0,4,0,4,0,5,0,4,0,4,0,5,0,4,0,5,0,4,#20tern
+                    0,4,0,5,0,4,0,3,0,5,0,4],#26tern
+                [0,0,0,0,2,9,1,1,2,9,0,0,2,9,2,5,2,3,2,5,
+                    2,3,2,5,2,9,2,5,2,3,2,5,2,9,2,5,2,3,2,5,
+                    2,9,2,5,2,3,1,1,2,9,2,5],
+                [0,3,0,3,1,1,0,1,2,0,0,3,0,7,2,6,0,7,2,6,
+                    0,1,2,0,0,7,2,6,0,1,2,0,0,7,2,6,0,1,2,0,
+                    0,7,2,6,1,1,0,1,2,0,0,1],
+                [3,7,0,6,3,7,0,6,3,7,0,6,3,1,0,0,3,1,0,0,
+                    3,7,0,6,3,1,0,0,3,7,0,6,3,1,0,0,3,7,0,6,
+                    3,1,0,0,3,7,0,6,3,7,2,5],
+                [0,1,0,1,0,1,0,2,0,2,0,1,0,8,0,8,0,8,0,8,
+                    0,2,0,2,0,8,0,8,0,2,0,2,0,8,0,8,0,2,0,2,
+                    0,8,0,8,0,1,0,2,0,4,0,4],
+                [1,8,1,8,1,8,1,8,1,8,1,8,1,2,1,2,1,2,1,2,
+                    1,8,1,8,1,2,1,2,1,8,1,8,1,2,1,2,1,8,1,8,
+                    1,2,1,2,1,8,1,8,1,8,1,8],
+                [1,6,0,7,1,6,0,7,1,6,0,7,1,0,0,1,1,0,0,1,
+                    1,6,0,7,1,0,0,1,1,6,0,7,1,0,0,1,1,6,0,7,
+                    1,0,0,1,1,6,0,7,1,6,1,6]
                 ]
-        nextBlock = blockIndex % 7 - 1
-        if nextBlock < 0:
-            nextBlock = 6
-        nextBlockMove = level1MoveList[nextBlock]
-        return nextBlockMove[0], nextBlockMove[1]
+        blockTern = int((blockIndex-1) / 7)
+        blockShapeIndex = blockIndex % 7 - 1
+        if blockShapeIndex < 0:
+            blockShapeIndex = 6
+        nextBlockDir = level1MoveList[blockShapeIndex][blockTern*2]
+        nextBlockX = level1MoveList[blockShapeIndex][blockTern*2+1]
+        return nextBlockDir, nextBlockX
 
     
     def getSearchXRange(self, Shape_class, direction):
