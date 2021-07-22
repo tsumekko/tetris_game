@@ -48,6 +48,7 @@ class Block_Controller(object):
                 nextMove["strategy"]["x"] = nextX
                 nextMove["strategy"]["y_operation"] = 1
                 nextMove["strategy"]["y_moveblocknum"] = 1
+                pprint.pprint(GameStatus["field_info"]["withblock"], width =31, compact = True)
                 return nextMove
             else :
                 self.isLevel1Mode = False
